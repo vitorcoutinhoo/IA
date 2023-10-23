@@ -5,8 +5,7 @@
 """
 
 # OrderedDict --> dicionário ordenado para armazenar os possíveis valores de cada coluna
-# defaultdict --> dicionário que retorna um valor padrão quando uma chave não existe
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 
 
 def map_reader(file_name):
