@@ -41,7 +41,7 @@ def get_proportions(count, data):
     '''
         Função que retorna a proporção de cada atributo e classe.
     '''
-    total_count = data["Dia"].count()
+    total_count = data[data.columns.values.tolist()[0]].count()
 
     proportions = {}
     for attr, values in count.items():
