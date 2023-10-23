@@ -4,69 +4,66 @@
     Disciplina: Inteligência Artificial
 """
 
-# OrderedDict --> dicionário ordenado para armazenar os possíveis valores de cada coluna
-from collections import OrderedDict
+import pandas as pd
+
+def get_data(path):
+    '''
+        Função que lê o arquivo csv e retorna os atributos e a classe
+        do dataset.
+    '''
+    _data = pd.read_csv(path, sep=',')
+        
+    _attributes = _data.columns.values.tolist()
+    _class = _attributes[-1]
+    _attributes = _attributes[1:-1]
+
+    return _data, _attributes, _class
+
+def get_count(_data, _attributes, _class):
+    '''
+        Função que retorna a quantidade de cada atributo e classe.
+    '''
+    _count = {}
+    for attr in _attributes:
+        _count[attr] = {}
+        for value in _data[attr].unique():
+            _count[attr][value] = {}
+            for _class_value in _data[_class].unique():
+                _count[attr][value][_class_value] = 0
+
+    for _, row in _data.iterrows():
+        for attr in _attributes:
+            _count[attr][row[attr]][row[_class]] += 1
+
+    return _count
+
+def get_proportions(count, data):
+    '''
+        Função que retorna a proporção de cada atributo e classe.
+    '''
+    total_count = data["Dia"].count()
+
+    proportions = {}
+    for attr, values in count.items():
+        proportions[attr] = {}
+        for value, class_counts in values.items():
+            proportions[attr][value] = {c: round(count/total_count, 9) for c, count in class_counts.items()}
+    return proportions
 
 
-def map_reader(file_name):
-    """
-    Função responsável por ler os dados do arquivo csv e
-    armazená-los em uma lista com os nomes das colunas e
-    uma matriz com os dados.
+data, attributes, _class = get_data('Projeto1/dados.csv')
+count = get_count(data, attributes, _class)
 
-    Parâmetros: path do arquivo csv
-    Retorno: Matriz com os dados do arquivo csv
-    """
-
-    header = []
-    dados = []
-    with open(file_name, "r", encoding="utf-8") as archive:
-        header = archive.readline().strip().split(",")
-        for line in archive:
-            aux = line.strip().split(",")
-            dados.append(aux)
-
-    return header, dados
-
-
-def get_values(header, data):
-    """
-    Função responsável por retornar os possíveis valores de
-    cada coluna da matriz.
-
-    Parâmetros: lista com os nomes das colunas e matriz com os dados
-    Retorno: lista com os possíveis valores de cada coluna
-    """
-
-    num_colunas = len(data[0])
-    possiveis_valores = []
-
-    for col in range(num_colunas):
-        valores_unicos = list(OrderedDict.fromkeys(row[col] for row in data))
-        possiveis_valores.append(valores_unicos)
-
-    aux = possiveis_valores[0]
-    possiveis_valores.remove(aux)
-
-    resultado = OrderedDict(zip(header, possiveis_valores))
-    return resultado
-
-
-
-    
-
-# head --> lista com os nomes das colunas
-# resp --> matriz com os dados
-# values --> lista com os possíveis valores de cada coluna
-head, resp = map_reader("Projeto1/dados.csv")
-values = get_values(head, resp)
-
-print(head)
+# arquivo csv
+print(data)
 print()
 
-for i in resp:
-    print(i)
+# Quantidades de sim e não para cada atributo
+for key, values in count.items():
+    print(key, values)
 print()
 
-for i in values:
-    print(i)
+# Proporções
+prop = get_proportions(count, data)
+for key, values in prop.items():
+    print(key, values)
