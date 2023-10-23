@@ -1,61 +1,73 @@
-'''
+"""
     Universidade Estadual de Santa Cruz - UESC
     Autores: Kauan Souza, Luíz Rosário e Vítor Coutinho
     Disciplina: Inteligência Artificial
-'''
+"""
+
+# OrderedDict --> dicionário ordenado para armazenar os possíveis valores de cada coluna
+# defaultdict --> dicionário que retorna um valor padrão quando uma chave não existe
+from collections import OrderedDict, defaultdict
+
 
 def map_reader(file_name):
-    '''
-        Função responsável por ler os dados do arquivo csv e 
-        armazená-los em um dicionário.
+    """
+    Função responsável por ler os dados do arquivo csv e
+    armazená-los em uma lista com os nomes das colunas e
+    uma matriz com os dados.
 
-        Parâmetros: path do arquivo csv
-        Retorno: Lista com os dados do arquivo csv
-    '''
+    Parâmetros: path do arquivo csv
+    Retorno: Matriz com os dados do arquivo csv
+    """
 
     header = []
     dados = []
     with open(file_name, "r", encoding="utf-8") as archive:
         header = archive.readline().strip().split(",")
         for line in archive:
-            line = line.strip().split(",")
-            map_data = {}
+            aux = line.strip().split(",")
+            dados.append(aux)
 
-            for i, header_value in enumerate(header):
-                map_data[header_value] = line[i]
-
-            dados.append(map_data)
-
-    return dados, header
-
-def get_values(dados, header):
-    '''
-        Função responsável por contar a quantidade de valores
-        de cada atributo.
-
-        Parâmetros: lista com os dados do arquivo csv e o cabeçalho
-        Retorno: Dicionário com os possivéis valores de cada atributo
-    '''
-
-    values = {}
-    for header_value in header:
-        values[header_value] = []
-
-    for dado in dados:
-        for header_value in header:
-            if dado[header_value] not in values[header_value]:
-                values[header_value].append(dado[header_value])
-
-    return values
+    return header, dados
 
 
-data_list, headers = map_reader("Projeto1/Teste.csv")
-possible_values = get_values(data_list, headers)
+def get_values(header, data):
+    """
+    Função responsável por retornar os possíveis valores de
+    cada coluna da matriz.
 
-for value in data_list:
-    print(value)
+    Parâmetros: lista com os nomes das colunas e matriz com os dados
+    Retorno: lista com os possíveis valores de cada coluna
+    """
 
+    num_colunas = len(data[0])
+    possiveis_valores = []
+
+    for col in range(num_colunas):
+        valores_unicos = list(OrderedDict.fromkeys(row[col] for row in data))
+        possiveis_valores.append(valores_unicos)
+
+    aux = possiveis_valores[0]
+    possiveis_valores.remove(aux)
+
+    resultado = OrderedDict(zip(header, possiveis_valores))
+    return resultado
+
+
+
+    
+
+# head --> lista com os nomes das colunas
+# resp --> matriz com os dados
+# values --> lista com os possíveis valores de cada coluna
+head, resp = map_reader("Projeto1/dados.csv")
+values = get_values(head, resp)
+
+print(head)
 print()
 
-for key, value in possible_values.items():
-    print(key, value)
+for i in resp:
+    print(i)
+print()
+
+for i in values:
+    print(i)
