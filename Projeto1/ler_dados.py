@@ -51,7 +51,7 @@ def obter_proporcoes(contagem, dados):
     return proporcoes
 
 
-dados, atributos, classe = obter_dados(r"Projeto1\animais.csv")
+dados, atributos, classe = obter_dados(r"Projeto1\dados.csv")
 
 # Imprimindo o arquivo CSV
 print("Conjunto de dados do arquivo CSV:")
@@ -90,10 +90,6 @@ def calcular_confianca_positiva(dados, antecedente, rotulo_classe):
     )
 
     return classificados_corretamente / len(exemplos_positivos)
-
-
-# Carregar o conjunto de dados e fazer a preparação
-dados, atributos, classe = obter_dados(r"Projeto1\animais.csv")
 
 # Inicializar uma lista vazia para armazenar as regras
 regras = []
