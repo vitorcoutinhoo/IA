@@ -1,0 +1,15 @@
+Regra,Animal,Anda,Nada,Voa,Classe
+1,Pato,sim,sim,sim,Ave
+2,Jacare,sim,sim,nao,Reptil
+3,Humano,sim,nao,nao,Mamifero
+4,Morto,nao,nao,nao,Morto
+5,Coruja,nao,nao,sim,Ave
+6,Exocitideo,nao,sim,sim,Peixe
+7,Dragao-Voador,sim,nao,sim,Reptil
+8,Tubarao,nao,sim,nao,Peixe
+9,Formiga,sim,nao,nao,Inseto
+10,Morcego,nao,nao,sim,Mamifero
+11,Cobra-Coral,sim,sim,nao,Reptil
+12,Mosquito,sim,nao,sim,Inseto
+13,Baleia,nao,sim,nao,Mamifero
+14,Galinha,sim,nao,nao,Ave
